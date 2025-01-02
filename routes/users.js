@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const router = express.Router();
 const endpoint = process.env["AZURE_SEARCH_ENDPOINT"] || "https://yoda-ai.openai.azure.com/";
-const deployment = process.env["AZURE_DEPLOYMENT_NAME"] || "gpt-4-1106-preview";
+const deployment = process.env["AZURE_DEPLOYMENT_NAME"] || "gpt-4o";
 const apiVersion = "2024-05-01-preview";
 
 router.get('/open-ai', async function (req, res) {
@@ -21,7 +21,7 @@ router.get('/open-ai', async function (req, res) {
   ];
 
   const azureADTokenProvider = getBearerTokenProvider(new DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default");
-  const client = new AzureOpenAI({ endpoint, azureADTokenProvider, deployment, apiVersion });
+  const client = new AzureOpenAI({endpoint,  azureADTokenProvider, deployment, apiVersion });
 
   try {
     const events = await client.chat.completions.create({
