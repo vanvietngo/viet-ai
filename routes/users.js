@@ -21,9 +21,20 @@ router.get('/open-ai', async function (req, res) {
   ];
 
   // const azureADTokenProvider = getBearerTokenProvider(new DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default");
-  const azureADTokenProvider = getBearerTokenProvider(new DefaultAzureCredential({
-    ManagedIdentityCredential: "10248762-8c83-4311-9091-0943843df021"
-  }), "https://cognitiveservices.azure.com/.default");
+  // const azureADTokenProvider = getBearerTokenProvider(new DefaultAzureCredential({
+  //   ManagedIdentityCredential: "10248762-8c83-4311-9091-0943843df021"
+  // }), "https://cognitiveservices.azure.com/.default");
+    const AZURE_CLIENT_ID = "9a2ba6cb-77e6-46e7-a2a5-fc1789de8366";
+
+  const credential = new DefaultAzureCredential({
+    managedIdentityClientId: AZURE_CLIENT_ID,
+  });
+
+  // const credential = new ManagedIdentityCredential(AZURE_CLIENT_ID);
+  const scope = "https://cognitiveservices.azure.com/.default";
+
+  const azureADTokenProvider = getBearerTokenProvider(credential, scope);
+  
   const client = new AzureOpenAI({endpoint,  azureADTokenProvider, deployment, apiVersion });
 
   try {
